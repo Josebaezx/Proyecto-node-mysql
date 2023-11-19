@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const pc = require("picocolors");
 
 const app = express();
 const port = 3000;
@@ -36,9 +37,9 @@ app.use(cors(corsOptions));
 
 db.connect((err) => {
   if (err) {
-    console.error('Error de conexión a la base de datos:', err);
+    console.error(pc.red('Error de conexión a la base de datos:', err));
   } else {
-    console.log('Conectado a la base de datos MySQL');
+    console.log(pc.bgGreen('Conectado a la base de datos MySQL'));
   }
 });
 
@@ -48,7 +49,7 @@ app.get("/clientes", (req, res) => {
 
   db.query(query, (err, result) => {
     if (err) {
-      console.error("Error al listar clientes:", err);
+      console.error(pc.red("Error al listar clientes:", err));
       res.status(500).send("Error interno del servidor");
     } else {
       res.json(result);
@@ -81,7 +82,7 @@ app.post("/clientes", (req, res) => {
     ],
     (err, result) => {
       if (err) {
-        console.error("Error al insertar cliente:", err);
+        console.error(pc.red("Error al insertar cliente:", err));
         res.status(500).send("Error interno del servidor");
       } else {
         res.send("Cliente insertado correctamente");
@@ -97,7 +98,7 @@ app.put("/clientes/:id", (req, res) => {
 
   db.query(query, [nombre, apellido, telefono, email, id], (err, result) => {
     if (err) {
-      console.error("Error al actualizar cliente:", err);
+      console.error(pc.red("Error al actualizar cliente:", err));
       res.status(500).send("Error interno del servidor");
     } else {
       res.send(`Cliente con ID ${id} actualizado correctamente`);
@@ -112,7 +113,7 @@ app.delete("/clientes/:id", (req, res) => {
 
   db.query(query, [id], (err, result) => {
     if (err) {
-      console.error("Error al eliminar cliente:", err);
+      console.error(pc.red("Error al eliminar cliente:", err));
       res.status(500).send("Error interno del servidor");
     } else {
       res.send(`Cliente con ID ${id} eliminado correctamente`);
