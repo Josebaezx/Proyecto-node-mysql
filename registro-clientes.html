@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Cliente</title>
+  <link rel="stylesheet" href="css/registro-clientes.css">
+</head>
+<body>
+  <a href="index.html">Volver atras</a>
+  <div id="mensaje"></div>
+  <!-- <form action="http://localhost:3000/clientes" method="POST"> -->
+  <form id="formulario">
+
+    <h1>Registro de Clientes</h1>
+
+    <div class="input-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" name="nombre" id="nombre" required>
+    </div>
+
+    <div class="input-group">
+      <label for="apellido">Apellido</label>
+      <input type="text" name="apellido" id="apellido" required>
+    </div>
+
+    <div class="input-group">
+      <label for="direccion">Dirección</label>
+      <input type="text" name="direccion" id="direccion" required>
+    </div>
+
+    <div class="input-group">
+      <label for="telefono">Teléfono</label>
+      <input type="tel" name="telefono" id="telefono" required>
+    </div>
+
+    <div class="input-group">
+      <label for="mail">Correo electrónico</label>
+      <input type="email" name="email" id="email" required>
+    </div>
+
+    <div class="input-group">
+      <label for="nacimiento">Fecha de nacimiento</label>
+      <input type="date" name="nacimiento" id="nacimiento" required>
+    </div>
+
+    <div class="input-group">
+      <label for="preferencias">Preferencias</label>
+      <select id="preferencias" name="preferencias" required>
+        <option value="Wisky">Wisky</option>
+        <option value="Vino">Vino</option>
+        <option value="Cerveza">Cerveza</option>
+        <option value="Licor">Licor</option>
+        <!-- Puedes agregar más opciones según sea necesario -->
+    </select>
+    </div>
+
+    <!-- <input type="submit" value="Registrar"> -->
+    <button type="button" onclick="guardarCliente()">Registrar</button>
+
+  </form>
+  <script>
+    async function guardarCliente() {
+      const nombre = document.getElementById('nombre').value;
+      const apellido = document.getElementById('apellido').value;
+      const telefono = document.getElementById('telefono').value;
+      const email = document.getElementById('email').value;
+      const nacimiento = document.getElementById('nacimiento').value;
+      const direccion = document.getElementById('direccion').value;
+      const preferencias = document.getElementById('preferencias').value;
+      formulario.reset();
+      try {
+        const response = await fetch('http://localhost:3000/clientes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nombre,
+            apellido,
+            direccion,
+            telefono,
+            email,
+            nacimiento,
+            preferencias
+          }),
+        });
+
+        const result = await response.text();
+        console.log(result); // Muestra el mensaje de éxito o error
+        mostrarMensaje();
+      } catch (error) {
+        console.error('Error al enviar datos:', error);
+      }
+    }
+
+    function mostrarMensaje() {
+      var mensajeElemento = document.getElementById('mensaje');
+      mensajeElemento.innerHTML = 'Guardado correctamente';
+      mensajeElemento.style.display = 'block';
+
+      // Ocultar el mensaje después de 5 segundos
+      setTimeout(function() {
+        mensajeElemento.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

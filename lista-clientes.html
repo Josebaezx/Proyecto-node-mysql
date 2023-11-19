@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Clientes</title>
+  <link rel="stylesheet" href="css/lista-clientes.css">
+</head>
+<body>
+<a href="index.html">Volver atras</a>
+
+  <h1>Lista de Clientes</h1>
+
+  <table id="clientesTable">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="data">
+    <!-- Los datos se agregarán aquí dinámicamente con JavaScript -->
+    </tbody>
+  </table>
+
+    <!-- <script>
+    let url= "http://localhost:3000/clientes"
+    fetch(url)
+      .then(response => response.json())
+      .then(data => mostrarData(data))
+      .catch(error => console.log(error))
+    </script> -->
+  <script>
+      let url = "http://localhost:3000/clientes"
+        fetch(url)
+            .then( response => response.json() )
+            .then( data => mostrarData(data) )
+            .catch( error => console.log(error) )
+
+        const mostrarData = (data) => {
+            console.log(data)
+            let body = ""
+            for (var i = 0; i < data.length; i++) {      
+               body+=`
+               <tr>
+                <td>${data[i].Nombre}</td>
+                <td>${data[i].Apellido}</td>
+                <td>${data[i].Telefono}</td>
+                <td>${data[i].Email}</td>
+              </tr>`
+            }
+            document.getElementById('data').innerHTML = body
+        }
+    </script>
+
+</body>
+</html>
