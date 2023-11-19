@@ -1,30 +1,30 @@
-const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const pc = require("picocolors");
+const express = require('express')
+const mysql = require('mysql2')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const pc = require('picocolors')
 
-const app = express();
-const port = 3000;
+const app = express()
+const port = 3000
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'Joserba84',
-  database: 'proyecto',
-});
+  database: 'proyecto'
+})
 
 const corsOptions = {
-  origin: "*", // o '*' para permitir cualquier dominio
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  origin: '*', // o '*' para permitir cualquier dominio
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // habilita el envío de cookies y credenciales de autenticación
-  optionsSuccessStatus: 204, // algunas implementaciones de navegadores requieren este código de estado para preflight
-};
+  optionsSuccessStatus: 204 // algunas implementaciones de navegadores requieren este código de estado para preflight
+}
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions))
 
 // Configurar cabeceras y cors custom
 // app.use((req, res, next) => {
@@ -37,28 +37,36 @@ app.use(cors(corsOptions));
 
 db.connect((err) => {
   if (err) {
-    console.error(pc.red('Error de conexión a la base de datos:', err));
+    console.error(pc.red('Error de conexión a la base de datos:', err))
   } else {
-    console.log(pc.bgGreen('Conectado a la base de datos MySQL'));
+    console.log(pc.bgGreen('Conectado a la base de datos MySQL'))
   }
-});
+})
 
 // Rutas y operaciones CRUD aquí
-app.get("/clientes", (req, res) => {
-  const query = "SELECT * FROM clientes";
+app.get('/clientes', (req, res) => {
+  const query = 'SELECT * FROM clientes'
 
   db.query(query, (err, result) => {
     if (err) {
-      console.error(pc.red("Error al listar clientes:", err));
-      res.status(500).send("Error interno del servidor");
+      console.error(pc.red('Error al listar clientes:', err))
+      res.status(500).send('Error interno del servidor')
     } else {
-      res.json(result);
+      res.json(result)
     }
-  });
-});
+  })
+})
 
-app.post("/clientes", (req, res) => {
-  const {nombre, apellido, direccion, telefono, email, nacimiento, preferencias } = req.body;
+app.post('/clientes', (req, res) => {
+  const {
+    nombre,
+    apellido,
+    direccion,
+    telefono,
+    email,
+    nacimiento,
+    preferencias
+  } = req.body
   const query = `INSERT INTO CLIENTES (
     nombre,
     apellido,
@@ -67,61 +75,52 @@ app.post("/clientes", (req, res) => {
     email,
     nacimiento,
     preferencias
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
   db.query(
     query,
-    [
-      nombre,
-      apellido,
-      direccion, 
-      telefono,
-      email,
-      nacimiento,
-      preferencias
-    ],
+    [nombre, apellido, direccion, telefono, email, nacimiento, preferencias],
     (err, result) => {
       if (err) {
-        console.error(pc.red("Error al insertar cliente:", err));
-        res.status(500).send("Error interno del servidor");
+        console.error(pc.red('Error al insertar cliente:', err))
+        res.status(500).send('Error interno del servidor')
       } else {
-        res.send("Cliente insertado correctamente");
+        res.send('Cliente insertado correctamente')
       }
     }
-  );
-});
+  )
+})
 
-app.put("/clientes/:id", (req, res) => {
-  const id = req.params.id;
-  const { nombre, apellido, telefono, email } = req.body;
-  const query = `UPDATE clientes SET nombre=?, apellido=?, telefono=?, email=? WHERE id=?`;
+app.put('/clientes/:id', (req, res) => {
+  const id = req.params.id
+  const { nombre, apellido, telefono, email } = req.body
+  const query =
+    'UPDATE clientes SET nombre=?, apellido=?, telefono=?, email=? WHERE id=?'
 
   db.query(query, [nombre, apellido, telefono, email, id], (err, result) => {
     if (err) {
-      console.error(pc.red("Error al actualizar cliente:", err));
-      res.status(500).send("Error interno del servidor");
+      console.error(pc.red('Error al actualizar cliente:', err))
+      res.status(500).send('Error interno del servidor')
     } else {
-      res.send(`Cliente con ID ${id} actualizado correctamente`);
+      res.send(`Cliente con ID ${id} actualizado correctamente`)
     }
-  });
-});
+  })
+})
 
-
-app.delete("/clientes/:id", (req, res) => {
-  const id = req.params.id;
-  const query = "DELETE FROM clientes WHERE id=?";
+app.delete('/clientes/:id', (req, res) => {
+  const id = req.params.id
+  const query = 'DELETE FROM clientes WHERE id=?'
 
   db.query(query, [id], (err, result) => {
     if (err) {
-      console.error(pc.red("Error al eliminar cliente:", err));
-      res.status(500).send("Error interno del servidor");
+      console.error(pc.red('Error al eliminar cliente:', err))
+      res.status(500).send('Error interno del servidor')
     } else {
-      res.send(`Cliente con ID ${id} eliminado correctamente`);
+      res.send(`Cliente con ID ${id} eliminado correctamente`)
     }
-  });
-});
-
+  })
+})
 
 app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
-});
+  console.log(`Servidor escuchando en http://localhost:${port}`)
+})

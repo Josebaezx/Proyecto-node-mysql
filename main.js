@@ -1,28 +1,29 @@
+/* eslint-disable no-unused-vars */
 // Lista para almacenar datos
-let listaDeDatos = [];
+const listaDeDatos = []
 
 // Función para realizar una solicitud GET y agregar datos a la lista
-function mostrarListaClientes() {
-  window.location.href = "lista-clientes.html";
-  
+
+function mostrarListaClientes () {
+  window.location.href = 'lista-clientes.html'
 }
 
-function registroCliente() {
-  window.location.href = "registro-clientes.html";
+function registroCliente () {
+  window.location.href = 'registro-clientes.html'
 }
 
-async function listarClientes() {
+async function listarClientes () {
   try {
-    const response = await fetch("http://localhost:3000/clientes"); // Reemplaza la URL con la que desees
-    const data = await response.json();
+    const response = await fetch('http://localhost:3000/clientes') // Reemplaza la URL con la que desees
+    const data = await response.json()
 
     // Agrega los datos a la lista
-    listaDeDatos.push(data);
+    listaDeDatos.push(data)
 
     // Muestra la lista actualizada
-    console.log("Lista de datos:", listaDeDatos);
+    console.log('Lista de datos:', listaDeDatos)
   } catch (error) {
-    console.error("Error al obtener datos:", error);
+    console.error('Error al obtener datos:', error)
   }
 }
 
