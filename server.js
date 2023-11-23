@@ -1,14 +1,14 @@
 const express = require('express')
 const mysql = require('mysql2')
-const bodyParser = require('body-parser')
 const cors = require('cors')
 const pc = require('picocolors')
+const zod = require('zod')
 
 const app = express()
+app.disable('x-powered-by')
 const port = 3000
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
 
 const db = mysql.createConnection({
   host: 'localhost',
