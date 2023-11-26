@@ -1,8 +1,9 @@
+/* eslint-disable no-tabs */
 const express = require('express')
 const mysql = require('mysql2')
 const cors = require('cors')
 const pc = require('picocolors')
-const zod = require('zod')
+const { validateClientes } = require('./src/schemas/clientes')
 
 const app = express()
 app.disable('x-powered-by')
@@ -58,15 +59,10 @@ app.get('/clientes', (req, res) => {
 })
 
 app.post('/clientes', (req, res) => {
-  const {
-    nombre,
-    apellido,
-    direccion,
-    telefono,
-    email,
-    nacimiento,
-    preferencias
-  } = req.body
+  const result = validateClientes(req.body)
+  if (result.error) {
+    return res.status(422).json({ error: JSON.parse(result.error.message) })
+  }
   const query = `INSERT INTO CLIENTES (
     nombre,
     apellido,
@@ -79,7 +75,15 @@ app.post('/clientes', (req, res) => {
 
   db.query(
     query,
-    [nombre, apellido, direccion, telefono, email, nacimiento, preferencias],
+    [
+      result.nombre,
+      result.apellido,
+      result.direccion,
+      result.telefono,
+      result.email,
+      result.nacimiento,
+      result.preferencias
+    ],
     (err, result) => {
       if (err) {
         console.error(pc.red('Error al insertar cliente:', err))

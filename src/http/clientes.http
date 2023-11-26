@@ -1,1 +1,16 @@
+### lista todos los clientes
 GET http://localhost:3000/clientes
+
+### crea un nuevo cliente
+POST http://localhost:3000/clientes
+Content-Type: application/json
+
+{
+    "nombre":"",
+    "apellido":"",
+    "direccion":"",
+    "telefono":"",
+    "email":"",
+    "nacimiento":"",
+    "preferencias":""
+}
